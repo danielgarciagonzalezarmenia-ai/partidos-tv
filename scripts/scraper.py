@@ -104,12 +104,12 @@ def get_iframe(page, match_url):
     """Pulsa Transmisión y captura la respuesta de broadcast/get-url."""
     page.goto(match_url, wait_until="domcontentloaded", timeout=60000)
     try:
-        page.wait_for_selector("text=Transmisión", timeout=15000)
+        page.wait_for_selector("text=Transmisión", timeout=10000)
     except Exception:
         pass
     try:
         with page.expect_response(
-            lambda r: "broadcast/get-url" in r.url, timeout=20000
+            lambda r: "broadcast/get-url" in r.url, timeout=12000
         ) as resp_info:
             page.click("text=Transmisión", timeout=10000, force=True)
         body = resp_info.value.json()
