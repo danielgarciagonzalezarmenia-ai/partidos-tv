@@ -19,11 +19,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Escribir cookies desde secreto
-        run: |
-          mkdir -p scripts
-          echo '${{ secrets.ONEWIN_COOKIES }}' > scripts/cookies.json
-
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
