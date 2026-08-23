@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partidos TV</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">⚽ Partidos<span>TV</span></div>
+    <div class="meta">
+      <span id="updated">cargando…</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="filters" class="filters"></div>
+    <div id="schedule" class="schedule"></div>
+  </main>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 id="modal-title"></h3>
+        <button class="close" data-close>✕</button>
+      </div>
+      <div class="modal-player">
+        <iframe id="modal-iframe" allow="autoplay; fullscreen" allowfullscreen
+          scrolling="no" frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

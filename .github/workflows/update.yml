@@ -1,0 +1,47 @@
+name: Actualizar partidos
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # cada 6 horas (los iframes llevan firma temporal)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Escribir cookies desde secreto
+        run: |
+          mkdir -p scripts
+          echo '${{ secrets.ONEWIN_COOKIES }}' > scripts/cookies.json
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scripts/requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Ejecutar scraper
+        working-directory: scripts
+        run: python scraper.py
+
+      - name: Commitear matches.json
+        run: |
+          git config user.name "bot-partidos"
+          git config user.email "bot@partidostv.local"
+          git add matches.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios"
+          else
+            git commit -m "auto: actualizar partidos $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          fi
