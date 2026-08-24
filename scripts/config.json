@@ -1,6 +1,8 @@
 {
   "partner_id": "44ba10e5-7df2-47ab-a44d-dc93803c7a6e",
   "periods": ["live", "prematch"],
+  "sport_id": 18,
+  "top_only": false,
   "max_matches": 15,
   "match_urls": [],
   "cookies_file": "cookies.json"

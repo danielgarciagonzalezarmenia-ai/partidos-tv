@@ -30,6 +30,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(HERE, "config.json")
 OUT_PATH = os.path.join(HERE, "..", "matches.json")
 
+# Competiciones que NO son fútbol real (eSports/simulaciones/virtuales),
+# top-parser las etiqueta como sport=football, así que se filtran por nombre.
+FAKE_FOOTBALL_RE = re.compile(
+    r"esports|e-sports|h2h|gg league|ehighlights|virtual|"
+    r"penalty shootout|highlights|simulation|cyber|betball",
+    re.IGNORECASE,
+)
+
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
 PARTNER_ID = "44ba10e5-7df2-47ab-a44d-dc93803c7a6e"
@@ -66,7 +74,7 @@ def load_cookies(config):
     return clean
 
 
-def get_listing_api(page, service):
+def get_listing_api(page, service, sport_id):
     """Devuelve la lista de partidos desde matches/get-many."""
     js = f"""async (service) => {{
       const h = {{
@@ -76,7 +84,7 @@ def get_listing_api(page, service):
         'x-user-location':'co',
         'accept':'application/json'
       }};
-      const body = JSON.stringify({{service, excludeSportType:'polybet', limit:200, hotsLimit:100}});
+      const body = JSON.stringify({{service, excludeSportType:'polybet', limit:200, hotsLimit:100, sportId:{sport_id}}});
       const r = await fetch('{API}/matches/get-many', {{method:'POST', headers:h, body}});
       const j = await r.json();
       return (j.result && j.result.items) || [];
@@ -156,10 +164,19 @@ def main():
                 })
         else:
             periods = config.get("periods") or ["live", "prematch"]
+            sport_id = config.get("sport_id", 18)
+            top_only = config.get("top_only", False)
             now = datetime.now(timezone.utc).timestamp()
             for svc in periods:
                 print(f"Listando ({svc})...")
-                for it in get_listing_api(page, svc):
+                for it in get_listing_api(page, svc, sport_id):
+                    # Solo fútbol real (excluye eSports/simulaciones virtuales).
+                    sp = it.get("sport") or {}
+                    if sp.get("slug") != "football" or sp.get("isEsport"):
+                        continue
+                    # "top" = solo destacados (isHot).
+                    if top_only and not it.get("isHot"):
+                        continue
                     # Para prematch, solo los próximos 48h (evita partidos lejanos).
                     if svc == "prematch":
                         sa = it.get("startAt") or 0
@@ -193,6 +210,9 @@ def main():
             if not iframe:
                 continue
             comp = tournament_name(page, it.get("tournamentId"), tcache) or "Otros"
+            # Excluye eSports/simulaciones (top-parser las etiqueta como football).
+            if FAKE_FOOTBALL_RE.search(comp):
+                continue
             start_iso = (datetime.fromtimestamp(it["startAt"], timezone.utc).isoformat()
                          if it.get("startAt") else datetime.now(timezone.utc).isoformat())
             results.append({
