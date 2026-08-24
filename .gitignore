@@ -1,7 +1,0 @@
-scripts/cookies.json
-__pycache__/
-*.pyc
-.venv/
-.env
-server/static/vs/
-server/__pycache__/
