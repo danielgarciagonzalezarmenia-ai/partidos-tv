@@ -1,113 +1,14 @@
 {
-  "updated": "2026-08-24T02:14:44.475325+00:00",
+  "updated": "2026-08-24T03:06:23.071819+00:00",
   "matches": [
     {
-      "id": 38444310,
-      "home": "Club de carreras de Avellaneda",
-      "away": "Boca Juniors",
-      "competition": "Liga Profesional",
-      "startTime": "2026-08-24T00:30:00+00:00",
+      "id": "42290753",
+      "home": "Partido en vivo",
+      "away": "Transmisión 1win",
+      "competition": "Top 1win",
+      "startTime": "2026-08-24T03:06:23.071849+00:00",
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MjM2ODkwNSZzaz1hNWUwMDEzJnR5cGU9cw&t=1787531400&lang=es&ts=1787537587&sign=4a5a8053880c6338a18d9c51fd0a12130a7483dcf746dede2054950b66682ad8"
-    },
-    {
-      "id": 38615224,
-      "home": "CDP Junior FC",
-      "away": "Una vez Caldas",
-      "competition": "Primera A",
-      "startTime": "2026-08-24T01:15:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MjI5MDc1MyZzaz1hNWUwMDEzJnR5cGU9cw&t=1787534100&lang=es&ts=1787537592&sign=4cb5cdc675224905c15418dee1b76efa6ed7a15ebf32ebcea61fb89de3b3829b"
-    },
-    {
-      "id": 39023276,
-      "home": "Lilli Tagger",
-      "away": "Starodubtseva Yuliia",
-      "competition": "WTA Monterrey, México Indiv.  Fem.",
-      "startTime": "2026-08-24T01:30:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MzQ1MDU3NCZzaz1hNWUwMDEzJnR5cGU9cw&t=1787535600&lang=es&ts=1787537597&sign=b919a7f31aa9f2183b6b831960f408b9a31c28002d5644e9408c9ba13cf34ca7"
-    },
-    {
-      "id": 38774841,
-      "home": "Cerveceros de Milwaukee",
-      "away": "Bravos de Atlanta",
-      "competition": "MLB",
-      "startTime": "2026-08-23T23:10:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTY3NDY3MyZzaz1hNWUwMDEzJnR5cGU9cw&t=1787526600&lang=es&ts=1787537602&sign=93f1b9258f1466d6f8b4885acc54ec7af8af2cee8b590d504140c8e636be76fa"
-    },
-    {
-      "id": 39065043,
-      "home": "Guerreros de Oaxaca",
-      "away": "Olmecas de Tabasco",
-      "competition": "Liga Mexicana",
-      "startTime": "2026-08-23T23:00:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/smp/iframe?ref=aHR0cHM6Ly9zcG9ydHZpZXcubGlmZS9lbWJlZC5waHAvP21hdGNoX2lkPTQzMjMwMTUwJnNrPTE1OGYzMDYmdHlwZT1z&t=1787526000&lang=es&ts=1787537607&sign=2c7ed1df7dec0fcf76eddf7bd7549c476b5e1026e8c9c5fb14cbc42488f55f2a"
-    },
-    {
-      "id": 39065047,
-      "home": "Charros de Jalisco",
-      "away": "Toros de Tijuana",
-      "competition": "Liga Mexicana",
-      "startTime": "2026-08-23T23:00:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MzQ2OTczMSZzaz1hNWUwMDEzJnR5cGU9cw&t=1787526000&lang=es&ts=1787537612&sign=8d4293d16710b5f2e87adf4bb7e94b5881fa5fb5e99d74329c71bd15e2df104f"
-    },
-    {
-      "id": 39065049,
-      "home": "Sultanes de Monterrey",
-      "away": "Caliente de Durango",
-      "competition": "Liga Mexicana",
-      "startTime": "2026-08-23T23:00:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/maxline/iframe?ref=https%3A%2F%2Fw1.soft4game.com%2Fo18%2Fstream39%2Fplaylist.m3u8&ts=1787537617&sign=721d9c855f50364eff3f2b37769981b397cd0dbb67f2ba6447aafa04d39ee993"
-    },
-    {
-      "id": 39069909,
-      "home": "Anton Molochko",
-      "away": "Nazar Danilyuk",
-      "competition": "Setka Cup",
-      "startTime": "2026-08-24T02:00:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/smp/iframe?ref=aHR0cHM6Ly9zcG9ydHZpZXcubGlmZS9lbWJlZC5waHAvP21hdGNoX2lkPTQzNDQ2MjEzJnNrPTE1OGYzMDYmdHlwZT1z&t=1787536800&lang=es&ts=1787537622&sign=da4465451d14811369ceca9a19700ab5cb14562ec45d5bfd728865313363ea20"
-    },
-    {
-      "id": 39070000,
-      "home": "Dmitri Kim",
-      "away": "Hryhorii Kulishov",
-      "competition": "Setka Cup",
-      "startTime": "2026-08-24T02:05:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/smp/iframe?ref=aHR0cHM6Ly9zcG9ydHZpZXcubGlmZS9lbWJlZC5waHAvP21hdGNoX2lkPTQzNDQ2MDcxJnNrPTE1OGYzMDYmdHlwZT1z&t=1787537100&lang=es&ts=1787537627&sign=49eb185b02db296df4a99a5a468399c8971c75d028ae8019b8f1dd8283b4cd3b"
-    },
-    {
-      "id": 39070246,
-      "home": "Aston Villa (tempest)",
-      "away": "Arsenal (zeus)",
-      "competition": "H2H GG League (2x4 min)",
-      "startTime": "2026-08-24T02:08:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MzQ4OTAyOSZzaz1hNWUwMDEzJnR5cGU9cw&t=1787537280&lang=es&ts=1787537673&sign=d5647a2ac5fd705d1930849e847246e275e4715af7853d41e35101b04e4f30eb"
-    },
-    {
-      "id": 39070307,
-      "home": "Liverpool (ashe)",
-      "away": "Nápoles (ent)",
-      "competition": "H2H GG League (2x4 min)",
-      "startTime": "2026-08-24T02:12:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MzQ4OTAzNyZzaz1hNWUwMDEzJnR5cGU9cw&t=1787537400&lang=es&ts=1787537678&sign=7d3c16a5fc9f7ecb9bb17aa5ea6a9462bcacce052c396c893c8c8cabbdaf1593"
-    },
-    {
-      "id": 39070290,
-      "home": "Man Utd (replays)",
-      "away": "Everton (replays)",
-      "competition": "Premier League",
-      "startTime": "2026-08-24T02:12:00+00:00",
-      "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/gt/iframe?id=18137026&ts=1787537683&sign=f40e57a1d0173dc58f99cd7fc93605b27b24f5cf3be05d06acb66a9f3bcd9a0f"
+      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MjI5MDc1MyZzaz1hNWUwMDEzJnR5cGU9cw&t=1787534100&lang=es&ts=1787540501&sign=c34c88d5816f8f25520f35601f86f2608ad26b7bb3d01a989bcf6f67e07253fe"
     }
   ]
 }
