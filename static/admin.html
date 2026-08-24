@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SportTV - Administrador</title>
+<style>
+  :root{
+    --bg:#0a0d13; --panel:#121722; --panel-2:#161c28; --line:#222b3a;
+    --text:#e8ecf3; --muted:#9aa6b8; --accent:#19c37d; --accent-2:#0e9c63; --danger:#e05260;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1000px 500px at 50% -10%,#11203a 0%,var(--bg) 55%) fixed;color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh}
+  .wrap{max-width:720px;margin:0 auto;padding:32px 20px 60px}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .logo{width:36px;height:36px}
+  .brand{font-size:22px;font-weight:800;letter-spacing:.5px}
+  .panel{background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px;margin-bottom:18px}
+  h2{margin:0 0 14px;font-size:16px}
+  label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
+  input[type=password],input[type=date],input[type=text]{
+    width:100%;background:#0c111b;border:1px solid var(--line);color:var(--text);
+    padding:11px 12px;border-radius:10px;font-size:14px}
+  input:focus{outline:none;border-color:var(--accent)}
+  .file-drop{border:1px dashed var(--line);border-radius:10px;padding:16px;text-align:center;color:var(--muted);cursor:pointer}
+  .file-drop input{display:none}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#04130c;
+    font-weight:700;padding:11px 16px;border-radius:10px;border:none;cursor:pointer;font-size:14px}
+  .btn:hover{background:var(--accent-2)}
+  .btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .btn.danger{background:transparent;color:var(--danger);border:1px solid rgba(224,82,96,.4)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+  .msg{margin-top:12px;font-size:13px;color:var(--muted);min-height:18px}
+  .msg.ok{color:var(--accent)}
+  .msg.err{color:var(--danger)}
+  .item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+  .item .info{font-size:14px}
+  .item .sub{color:var(--muted);font-size:12px}
+  .hidden{display:none}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px}
+  a.back:hover{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#19c37d"/><path d="M20 16 L34 24 L20 32 Z" fill="#04130c"/></svg>
+    <div class="brand">SportTV <span style="color:var(--muted);font-weight:500;font-size:13px">/ Administrador</span></div>
+  </header>
+  <a class="back" href="/">Volver a la web</a>
+
+  <!-- LOGIN -->
+  <div class="panel" id="loginPanel">
+    <h2>Acceso</h2>
+    <label for="pw">Contrasena</label>
+    <input type="password" id="pw" placeholder="Ingresa tu contrasena" />
+    <div class="row">
+      <button class="btn" id="loginBtn">Entrar</button>
+    </div>
+    <div class="msg" id="loginMsg"></div>
+  </div>
+
+  <!-- PANEL -->
+  <div class="panel hidden" id="adminPanel">
+    <h2>Subir lista diaria (.m3u8)</h2>
+    <label>Archivo M3U8</label>
+    <label class="file-drop" for="file">Haz clic para seleccionar tu archivo .m3u8
+      <input type="file" id="file" accept=".m3u8,audio/x-mpegurl" />
+    </label>
+    <label for="date">Fecha (se usa para identificar la lista)</label>
+    <input type="date" id="date" />
+    <label for="label">Etiqueta opcional (ej. "Jornada 3")</label>
+    <input type="text" id="label" placeholder="Dejar vacio para usar la fecha" />
+    <div class="row">
+      <button class="btn" id="uploadBtn">Publicar lista</button>
+      <button class="btn ghost" id="logoutBtn">Cerrar sesion</button>
+    </div>
+    <div class="msg" id="uploadMsg"></div>
+  </div>
+
+  <div class="panel hidden" id="listsPanel">
+    <h2>Listas publicadas</h2>
+    <div id="adminLists"></div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+function today(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; }
+$('#date').value = today();
+
+function showPanel(){
+  $('#loginPanel').classList.add('hidden');
+  $('#adminPanel').classList.remove('hidden');
+  $('#listsPanel').classList.remove('hidden');
+  loadLists();
+}
+function checkSession(){
+  fetch('/api/lists',{credentials:'same-origin'}).then(()=>{
+    // si hay cookie, el panel funciona; probamos subiendo? simpler: siempre mostramos login primero
+  });
+}
+
+$('#loginBtn').onclick = ()=>{
+  const pw = $('#pw').value;
+  fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'password='+encodeURIComponent(pw),credentials:'same-origin'})
+    .then(r=>{ if(!r.ok) throw new Error(); return r.json(); })
+    .then(()=>{ $('#loginMsg').textContent=''; showPanel(); })
+    .catch(()=>{ $('#loginMsg').className='msg err'; $('#loginMsg').textContent='Contrasena incorrecta.'; });
+};
+
+$('#logoutBtn').onclick = ()=>{
+  // borrar cookie via logout (no existe endpoint; la reemplazamos con valor vacio)
+  document.cookie = 'sp_session=; Max-Age=0; path=/';
+  location.reload();
+};
+
+$('#uploadBtn').onclick = ()=>{
+  const f = $('#file').files[0];
+  const msg = $('#uploadMsg'); msg.className='msg'; msg.textContent='';
+  if(!f){ msg.className='msg err'; msg.textContent='Selecciona un archivo .m3u8'; return; }
+  const fd = new FormData();
+  fd.append('file', f);
+  fd.append('date', $('#date').value);
+  fd.append('label', $('#label').value);
+  fetch('/api/upload',{method:'POST',body:fd,credentials:'same-origin'})
+    .then(r=>r.json().then(j=>({r,j})))
+    .then(({r,j})=>{ if(!r.ok) throw new Error(j.detail||''); msg.className='msg ok'; msg.textContent='Lista publicada: '+j.entry.date; $('#file').value=''; loadLists(); })
+    .catch(e=>{ msg.className='msg err'; msg.textContent='Error: '+(e.message||'no autorizado'); });
+};
+
+function loadLists(){
+  fetch('/api/lists',{credentials:'same-origin'}).then(r=>r.json()).then(d=>{
+    const box = $('#adminLists'); box.innerHTML='';
+    if(!d.lists.length){ box.innerHTML='<div class="sub">No hay listas.</div>'; return; }
+    d.lists.forEach(m=>{
+      const row=document.createElement('div'); row.className='item';
+      row.innerHTML=`<div><div class="info">${m.label||m.date}</div><div class="sub">${m.date}</div></div>`;
+      const del=document.createElement('button'); del.className='btn danger'; del.textContent='Eliminar';
+      del.onclick=()=>{
+        const fd=new FormData(); fd.append('date',m.date);
+        fetch('/api/delete',{method:'POST',body:fd,credentials:'same-origin'})
+          .then(r=>r.json()).then(()=>loadLists()).catch(()=>alert('No autorizado'));
+      };
+      row.appendChild(del); box.appendChild(row);
+    });
+  });
+}
+</script>
+</body>
+</html>
