@@ -30,11 +30,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(HERE, "config.json")
 OUT_PATH = os.path.join(HERE, "..", "matches.json")
 
-# Competiciones que NO son fútbol real (eSports/simulaciones/virtuales),
-# top-parser las etiqueta como sport=football, así que se filtran por nombre.
+# Competiciones que NO son fútbol real (eSports/simulaciones/virtuales) o que
+# no son "ligas grandes" (femeniles/juveniles). top-parser etiqueta las
+# simulaciones como sport=football, así que se filtran por nombre.
 FAKE_FOOTBALL_RE = re.compile(
     r"esports|e-sports|h2h|gg league|ehighlights|virtual|"
-    r"penalty shootout|highlights|simulation|cyber|betball",
+    r"penalty shootout|highlights|simulation|cyber|betball|"
+    r"femenin|women|femenina|\bu19\b|\bu20\b|\bu21\b|\bu23\b|youth|sub[\s-]?\d",
     re.IGNORECASE,
 )
 
@@ -112,14 +114,13 @@ def get_iframe(page, match_url):
     """Pulsa Transmisión y captura la respuesta de broadcast/get-url."""
     page.goto(match_url, wait_until="domcontentloaded", timeout=60000)
     try:
-        page.wait_for_selector("text=Transmisión", timeout=10000)
-    except Exception:
-        pass
-    try:
+        btn = page.get_by_text("Transmisión", exact=False).first
+        btn.wait_for(state="visible", timeout=12000)
+        page.wait_for_timeout(800)
         with page.expect_response(
-            lambda r: "broadcast/get-url" in r.url, timeout=12000
+            lambda r: "broadcast/get-url" in r.url, timeout=15000
         ) as resp_info:
-            page.click("text=Transmisión", timeout=10000, force=True)
+            btn.click(timeout=10000)
         body = resp_info.value.json()
         url = (body.get("result") or {}).get("url")
         if url:
@@ -165,7 +166,8 @@ def main():
         else:
             periods = config.get("periods") or ["live", "prematch"]
             sport_id = config.get("sport_id", 18)
-            top_only = config.get("top_only", False)
+            only_top = config.get("only_top_leagues", False)
+            top_leagues = [str(k).lower() for k in (config.get("top_leagues") or [])]
             now = datetime.now(timezone.utc).timestamp()
             for svc in periods:
                 print(f"Listando ({svc})...")
@@ -174,9 +176,8 @@ def main():
                     sp = it.get("sport") or {}
                     if sp.get("slug") != "football" or sp.get("isEsport"):
                         continue
-                    # "top" = solo destacados (isHot).
-                    if top_only and not it.get("isHot"):
-                        continue
+                    # (El filtro de ligas grandes se aplica tras resolver el nombre
+                    #  en la fase de procesamiento, para no abrir paginas innecesarias.)
                     # Para prematch, solo los próximos 48h (evita partidos lejanos).
                     if svc == "prematch":
                         sa = it.get("startAt") or 0
@@ -195,9 +196,12 @@ def main():
                     })
 
         max_matches = config.get("max_matches")
-        if max_matches:
-            items = items[: int(max_matches)]
+        # Priorizar: live primero, luego prematch por hora de inicio (los mas
+        # inminentes entran en el presupuesto antes del challenge de Cloudflare).
+        items.sort(key=lambda it: (it.get("service") != "live", it.get("startAt") or 0))
 
+        # Nota: no recortamos 'items' aqui para no perder grandes ligas; se
+        # limita el resultado final a max_matches despues de filtrar.
         print(f"Total partidos a procesar: {len(items)}")
         seen = set()
         for it in items:
@@ -205,26 +209,41 @@ def main():
             if url in seen:
                 continue
             seen.add(url)
-            print("Procesando:", url)
-            iframe = get_iframe(page, url)
-            if not iframe:
-                continue
-            comp = tournament_name(page, it.get("tournamentId"), tcache) or "Otros"
-            # Excluye eSports/simulaciones (top-parser las etiqueta como football).
-            if FAKE_FOOTBALL_RE.search(comp):
-                continue
-            start_iso = (datetime.fromtimestamp(it["startAt"], timezone.utc).isoformat()
-                         if it.get("startAt") else datetime.now(timezone.utc).isoformat())
-            results.append({
-                "id": it.get("id", ""),
-                "home": (it.get("homeTeam") or {}).get("name", "?"),
-                "away": (it.get("awayTeam") or {}).get("name", "?"),
-                "competition": comp,
-                "startTime": start_iso,
-                "source": "1win",
-                "iframe": iframe,
-            })
+            try:
+                # Resolver competicion y filtrar ANTES de abrir la pagina (ahorra tiempo).
+                comp = tournament_name(page, it.get("tournamentId"), tcache) or "Otros"
+                # Excluye eSports/simulaciones (top-parser las etiqueta como football).
+                if FAKE_FOOTBALL_RE.search(comp):
+                    continue
+                # Solo ligas grandes (whitelist configurable).
+                if only_top and not any(k in comp.lower() for k in top_leagues):
+                    continue
+                print("Procesando:", url)
+                iframe = get_iframe(page, url)
+                # Espaciar requests para no disparar el challenge de Cloudflare.
+                page.wait_for_timeout(3000)
+                if not iframe:
+                    continue
+                start_iso = (datetime.fromtimestamp(it["startAt"], timezone.utc).isoformat()
+                             if it.get("startAt") else datetime.now(timezone.utc).isoformat())
+                results.append({
+                    "id": it.get("id", ""),
+                    "home": (it.get("homeTeam") or {}).get("name", "?"),
+                    "away": (it.get("awayTeam") or {}).get("name", "?"),
+                    "competition": comp,
+                    "startTime": start_iso,
+                    "live": it.get("service") == "live",
+                    "source": "1win",
+                    "iframe": iframe,
+                })
+            except Exception as e:
+                print("  ! error procesando", url, ":", str(e)[:120])
         browser.close()
+
+    # Orden: live primero y luego por hora de inicio.
+    results.sort(key=lambda m: (m.get("live") is not True, m.get("startTime") or ""))
+    if max_matches:
+        results = results[: int(max_matches)]
 
     out = {"updated": datetime.now(timezone.utc).isoformat(), "matches": results}
     with open(OUT_PATH, "w", encoding="utf-8") as f:
