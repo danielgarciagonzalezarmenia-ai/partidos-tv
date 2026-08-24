@@ -230,6 +230,8 @@ def main():
                     "id": it.get("id", ""),
                     "home": (it.get("homeTeam") or {}).get("name", "?"),
                     "away": (it.get("awayTeam") or {}).get("name", "?"),
+                    "homeLogo": (it.get("homeTeam") or {}).get("logo", {}).get("url"),
+                    "awayLogo": (it.get("awayTeam") or {}).get("logo", {}).get("url"),
                     "competition": comp,
                     "startTime": start_iso,
                     "live": it.get("service") == "live",

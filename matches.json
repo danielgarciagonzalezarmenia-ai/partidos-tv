@@ -1,85 +1,101 @@
 {
-  "updated": "2026-08-24T14:45:09.273587+00:00",
+  "updated": "2026-08-24T15:06:21.396633+00:00",
   "matches": [
     {
       "id": 38796152,
       "home": "Isloch Minsk",
       "away": "Dinamo Minsk",
+      "homeLogo": "https://bstatic.live/icons/66a7177c3dd28202cd3fa349a00bfb72ca2723a5.webp",
+      "awayLogo": "https://bstatic.live/icons/375ffa87b1990ba9327df05de597a80eeed7d2ba.webp",
       "competition": "Premier League",
       "startTime": "2026-08-24T14:30:00+00:00",
       "live": false,
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD0xNTcxMzU3NSZzaz1hNWUwMDEzJnR5cGU9cw&t=1787581800&lang=es&ts=1787582529&sign=58e3f9497d7efaa3e91064c20064e14ecd3d15ff67d42f9446ecc3ba0e88f960"
+      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD0xNTcxMzU3NSZzaz1hNWUwMDEzJnR5cGU9cw&t=1787581800&lang=es&ts=1787583800&sign=329d925d26061c9b91cffc983195787bf105004b298115fd0b9b87814e1e6086"
     },
     {
-      "id": 39091782,
-      "home": "Man City (replays)",
+      "id": 39092363,
+      "home": "Liverpool (replays)",
       "away": "Newcastle (replays)",
+      "homeLogo": "https://bstatic.live/team-icons/12-1608761.webp",
+      "awayLogo": "https://bstatic.live/team-icons/12-1608773.webp",
       "competition": "Premier League",
-      "startTime": "2026-08-24T14:40:00+00:00",
+      "startTime": "2026-08-24T15:00:00+00:00",
       "live": false,
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/gt/iframe?id=18144697&ts=1787582538&sign=7f7df1190ef8a25a068c4363e503e8250ff0e2c3b607d0e705b101946d3ce342"
+      "iframe": "https://video-translations.top-parser.com/gt/iframe?id=18145071&ts=1787583809&sign=fd604d50be29883ff7c8c7804be90d441b1d4919eb0d1c90314229c7602316e5"
     },
     {
-      "id": 39091779,
-      "home": "Real Madrid (replays)",
-      "away": "Valencia (replays)",
+      "id": 39092370,
+      "home": "Atletico Madrid (replays)",
+      "away": "Real Sociedad (replays)",
+      "homeLogo": "https://bstatic.live/team-icons/12-1610902.webp",
+      "awayLogo": "https://bstatic.live/team-icons/12-1643963.webp",
       "competition": "La Liga",
-      "startTime": "2026-08-24T14:40:00+00:00",
+      "startTime": "2026-08-24T15:00:00+00:00",
       "live": false,
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/gt/iframe?id=18144720&ts=1787582547&sign=77b00d1fb9a8401c14577c3d7c83d19336eb53f2c9f39df90077ed14c52f6791"
+      "iframe": "https://video-translations.top-parser.com/gt/iframe?id=18145064&ts=1787583818&sign=6f74230333812debcc9b6297905f3aab7e57597cd8a239023fc138ca08bd9d90"
     },
     {
       "id": 36479626,
       "home": "Bolonia",
       "away": "Lacio",
+      "homeLogo": "https://bstatic.live/team-icons/10-720.webp",
+      "awayLogo": "https://bstatic.live/team-icons/10-726.webp",
       "competition": "Serie A",
       "startTime": "2026-08-24T16:30:00+00:00",
       "live": false,
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTA2NjMzMiZzaz1hNWUwMDEzJnR5cGU9cw&t=1787589000&lang=es&ts=1787582587&sign=4af86a4d9869a48bc303632e6672dfe1f621c77a4da1cdc519cc45c0a22c43c3"
+      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTA2NjMzMiZzaz1hNWUwMDEzJnR5cGU9cw&t=1787589000&lang=es&ts=1787583860&sign=fc267e01bb682a1a48145e2059fbccc864d58fd71a9f46f7cafde68105fe4421"
     },
     {
       "id": 38155777,
       "home": "Osasuna",
       "away": "Levante",
+      "homeLogo": "https://bstatic.live/team-icons/10-754.webp",
+      "awayLogo": "https://bstatic.live/team-icons/10-1667.webp",
       "competition": "LaLiga",
       "startTime": "2026-08-24T17:30:00+00:00",
       "live": false,
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTYyNzM4NiZzaz1hNWUwMDEzJnR5cGU9cw&t=1787592600&lang=es&ts=1787582597&sign=7f0cb27f208be252be9b60c1587da8eeb1df3c12f2bd97c38e50a42bf1e56e08"
+      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTYyNzM4NiZzaz1hNWUwMDEzJnR5cGU9cw&t=1787592600&lang=es&ts=1787583869&sign=76af785c2d5c6febeeae54b4134561df246dc5af9a09316811c6b2f8550d033c"
     },
     {
       "id": 36653727,
       "home": "AS Roma",
       "away": "ACF Fiorentina",
+      "homeLogo": "https://bstatic.live/team-icons/10-732.webp",
+      "awayLogo": "https://bstatic.live/team-icons/10-723.webp",
       "competition": "Serie A",
       "startTime": "2026-08-24T18:45:00+00:00",
       "live": false,
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTE5NjIwMiZzaz1hNWUwMDEzJnR5cGU9cw&t=1787597100&lang=es&ts=1787582606&sign=1868fd9893ca3c2b98bbb9a7c0e9aab1c472f57c95b9a5238057839d23666b9e"
+      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTE5NjIwMiZzaz1hNWUwMDEzJnR5cGU9cw&t=1787597100&lang=es&ts=1787583879&sign=5a9caa78b92c86ccb71430996e5386692ac6d08f9d613c5c5fdd02fd2b9adabe"
     },
     {
       "id": 36653616,
       "home": "Fulham",
       "away": "Chelsea",
+      "homeLogo": "https://bstatic.live/team-icons/10-17.webp",
+      "awayLogo": "https://bstatic.live/team-icons/10-4.webp",
       "competition": "Premier League",
       "startTime": "2026-08-24T19:00:00+00:00",
       "live": false,
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTI0ODc3NCZzaz1hNWUwMDEzJnR5cGU9cw&t=1787598000&lang=es&ts=1787582616&sign=8f1812dfde3390a87f642a15565c18bfce7ef1e03098332a2c33626aa355338d"
+      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTI0ODc3NCZzaz1hNWUwMDEzJnR5cGU9cw&t=1787598000&lang=es&ts=1787583888&sign=183b3dee8ab0406e37595af6f9dc0d31a403ac3b7e7f6a53822cbe112d270f94"
     },
     {
       "id": 38155769,
       "home": "málaga",
       "away": "Depor",
+      "homeLogo": "https://bstatic.live/team-icons/10-752.webp",
+      "awayLogo": "https://bstatic.live/team-icons/10-749.webp",
       "competition": "LaLiga",
       "startTime": "2026-08-24T19:30:00+00:00",
       "live": false,
       "source": "1win",
-      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTYyNzM5NSZzaz1hNWUwMDEzJnR5cGU9cw&t=1787599800&lang=es&ts=1787582625&sign=807efa9cdf7630fdbc92e98d6f8480ead3696059adb3d5c73ab26c605a4a85da"
+      "iframe": "https://video-translations.top-parser.com/sm/iframe?ref=aHR0cHM6Ly9zbWQuc3BvcnRwbGF5ZXIuaW8vZW1iZWQucGhwLz9tYXRjaF9pZD00MTYyNzM5NSZzaz1hNWUwMDEzJnR5cGU9cw&t=1787599800&lang=es&ts=1787583897&sign=86009db511fad55addceb210fee7ff4ecf15c9ece1171a07da65134fa0770165"
     }
   ]
 }
