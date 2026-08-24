@@ -78,7 +78,7 @@
 
   <footer>
     <span>SportTV</span>
-    <a href="/admin">Acceso administrador</a>
+    <a href="admin.html">Acceso administrador</a>
   </footer>
 </div>
 
@@ -97,23 +97,27 @@ function card(m){
       <span class="badge">M3U8</span>
     </div>
     <div class="meta"><span>${m.date}</span><span>${fmtSize(m.size)}</span></div>
-    <a class="btn" href="/lists/${m.filename}" download>
+    <a class="btn" href="lists/${m.filename}" download>
       <svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M5 19h14" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Descargar
     </a>`;
   return el;
 }
-fetch("/api/lists").then(r=>r.json()).then(d=>{
-  const box = document.getElementById("lists");
-  document.getElementById("count").textContent = d.count + (d.count===1?" lista":" listas");
-  if(!d.lists.length){
-    box.innerHTML = `<div class="empty">Aun no hay listas publicadas.</div>`;
-    return;
-  }
-  d.lists.forEach(m=>box.appendChild(card(m)));
-}).catch(()=>{
-  document.getElementById("lists").innerHTML = `<div class="empty">No se pudieron cargar las listas.</div>`;
-});
+fetch("lists/index.json")
+  .then(r => r.ok ? r.json() : {lists: []})
+  .then(d => {
+    const box = document.getElementById("lists");
+    const list = d.lists || [];
+    document.getElementById("count").textContent = list.length + (list.length === 1 ? " lista" : " listas");
+    if(!list.length){
+      box.innerHTML = `<div class="empty">Aun no hay listas publicadas.</div>`;
+      return;
+    }
+    list.forEach(m => box.appendChild(card(m)));
+  })
+  .catch(() => {
+    document.getElementById("lists").innerHTML = `<div class="empty">No se pudieron cargar las listas.</div>`;
+  });
 </script>
 </body>
 </html>

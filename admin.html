@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SportTV - Administrador</title>
+<style>
+  :root{
+    --bg:#0a0d13; --panel:#121722; --panel-2:#161c28; --line:#222b3a;
+    --text:#e8ecf3; --muted:#9aa6b8; --accent:#19c37d; --accent-2:#0e9c63; --danger:#e05260;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1000px 500px at 50% -10%,#11203a 0%,var(--bg) 55%) fixed;color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh}
+  .wrap{max-width:720px;margin:0 auto;padding:32px 20px 60px}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .logo{width:36px;height:36px}
+  .brand{font-size:22px;font-weight:800;letter-spacing:.5px}
+  .panel{background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px;margin-bottom:18px}
+  h2{margin:0 0 14px;font-size:16px}
+  label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
+  input[type=password],input[type=date],input[type=text]{
+    width:100%;background:#0c111b;border:1px solid var(--line);color:var(--text);
+    padding:11px 12px;border-radius:10px;font-size:14px}
+  input:focus{outline:none;border-color:var(--accent)}
+  .file-drop{border:1px dashed var(--line);border-radius:10px;border:1px dashed var(--line);padding:16px;text-align:center;color:var(--muted);cursor:pointer;background:#0c111b}
+  .file-drop input{display:none}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#04130c;
+    font-weight:700;padding:11px 16px;border-radius:10px;border:none;cursor:pointer;font-size:14px}
+  .btn:hover{background:var(--accent-2)}
+  .btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .btn.danger{background:transparent;color:var(--danger);border:1px solid rgba(224,82,96,.4)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+  .msg{margin-top:12px;font-size:13px;color:var(--muted);min-height:18px;white-space:pre-wrap}
+  .msg.ok{color:var(--accent)}
+  .msg.err{color:var(--danger)}
+  .item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+  .item .info{font-size:14px}
+  .item .sub{color:var(--muted);font-size:12px}
+  .hidden{display:none}
+  a.back{color:var(--muted);text-decoration:none;font-size:13px}
+  a.back:hover{color:var(--text)}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#19c37d"/><path d="M20 16 L34 24 L20 32 Z" fill="#04130c"/></svg>
+    <div class="brand">SportTV <span style="color:var(--muted);font-weight:500;font-size:13px">/ Administrador</span></div>
+  </header>
+  <a class="back" href="index.html">Volver a la web</a>
+
+  <!-- LOGIN -->
+  <div class="panel" id="loginPanel">
+    <h2>Acceso de administrador</h2>
+    <label for="user">Usuario</label>
+    <input type="text" id="user" value="admin" />
+    <label for="pw">Contrasena</label>
+    <input type="password" id="pw" placeholder="Ingresa tu contrasena" />
+    <div class="row"><button class="btn" id="loginBtn">Entrar</button></div>
+    <div class="msg" id="loginMsg"></div>
+  </div>
+
+  <!-- PANEL -->
+  <div class="panel hidden" id="adminPanel">
+    <h2>Subir lista diaria (.m3u8)</h2>
+    <label for="pat">GitHub Token (PAT) con permiso repo
+      <span class="hint">Se guarda solo en este navegador (localStorage). Crealo en GitHub: Settings &rarr; Developer settings &rarr; Personal access tokens.</span>
+    </label>
+    <input type="password" id="pat" placeholder="ghp_..." />
+    <label>Archivo M3U8</label>
+    <label class="file-drop" for="file">Haz clic para seleccionar tu archivo .m3u8
+      <input type="file" id="file" accept=".m3u8,audio/x-mpegurl" />
+    </label>
+    <label for="date">Fecha (identifica la lista)</label>
+    <input type="date" id="date" />
+    <label for="label">Etiqueta opcional (ej. "Jornada 3")</label>
+    <input type="text" id="label" placeholder="Dejar vacio para usar la fecha" />
+    <div class="row">
+      <button class="btn" id="uploadBtn">Publicar lista</button>
+      <button class="btn ghost" id="logoutBtn">Cerrar sesion</button>
+    </div>
+    <div class="msg" id="uploadMsg"></div>
+  </div>
+
+  <div class="panel hidden" id="listsPanel">
+    <h2>Listas publicadas</h2>
+    <div id="adminLists"></div>
+  </div>
+</div>
+
+<script>
+const OWNER="danielgarciagonzalezarmenia-ai";
+const REPO="partidos-tv";
+const BRANCH="main";
+const API="https://api.github.com";
+const PW_HASH="bda8e4ce64aff2fdb14a29171abda33112d1b1843adf95d595f923edaa5e1504";
+
+const $ = s => document.querySelector(s);
+function today(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; }
+function fmtDate(d){ try{ const [y,m,dd]=d.split("-").map(Number); const M=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]; return `${dd} de ${M[m-1]} de ${y}`; }catch(e){ return d; } }
+function b64enc(str){ return btoa(unescape(encodeURIComponent(str))); }
+function b64dec(b64){ return decodeURIComponent(escape(atob(b64))); }
+function sha256hex(s){ return crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)).then(h=>[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('')); }
+function getToken(){ const v=$('#pat').value.trim(); if(v){ localStorage.setItem('sp_pat', v); } return localStorage.getItem('sp_pat') || ""; }
+
+function showPanel(){
+  if(sessionStorage.getItem('sp_admin')!=='1') sessionStorage.setItem('sp_admin','1');
+  $('#loginPanel').classList.add('hidden');
+  $('#adminPanel').classList.remove('hidden');
+  $('#listsPanel').classList.remove('hidden');
+  loadLists();
+}
+
+$('#loginBtn').onclick = async ()=>{
+  const user=$('#user').value.trim(); const pw=$('#pw').value;
+  if(user!=='admin'){ $('#loginMsg').className='msg err'; $('#loginMsg').textContent='Usuario incorrecto.'; return; }
+  const h=await sha256hex(pw);
+  if(h===PW_HASH){ $('#loginMsg').textContent=''; showPanel(); }
+  else { $('#loginMsg').className='msg err'; $('#loginMsg').textContent='Contrasena incorrecta.'; }
+};
+$('#logoutBtn').onclick = ()=>{ sessionStorage.removeItem('sp_admin'); localStorage.removeItem('sp_pat'); location.reload(); };
+
+async function ghGet(path){
+  const tok=getToken();
+  const r=await fetch(`${API}/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,{headers:{Authorization:'Bearer '+tok, Accept:'application/vnd.github+json'}});
+  if(r.status===404) return null;
+  if(!r.ok) throw new Error('GitHub '+r.status);
+  return r.json();
+}
+async function ghPut(path, contentB64, sha, message){
+  const tok=getToken();
+  const body={message, content:contentB64, branch:BRANCH};
+  if(sha) body.sha=sha;
+  const r=await fetch(`${API}/repos/${OWNER}/${REPO}/contents/${path}`,{method:'PUT',headers:{Authorization:'Bearer '+tok,'Content-Type':'application/json',Accept:'application/vnd.github+json'},body:JSON.stringify(body)});
+  if(!r.ok) throw new Error('GitHub '+r.status);
+  return r.json();
+}
+async function ghDelete(path, sha, message){
+  const tok=getToken();
+  const r=await fetch(`${API}/repos/${OWNER}/${REPO}/contents/${path}`,{method:'DELETE',headers:{Authorization:'Bearer '+tok,'Content-Type':'application/json',Accept:'application/vnd.github+json'},body:JSON.stringify({message, sha, branch:BRANCH})});
+  if(!r.ok) throw new Error('GitHub '+r.status);
+}
+
+$('#uploadBtn').onclick = async ()=>{
+  const msg=$('#uploadMsg'); msg.className='msg'; msg.textContent='';
+  const tok=getToken();
+  if(!tok){ msg.className='msg err'; msg.textContent='Pega tu GitHub Token (PAT) arriba.'; return; }
+  const f=$('#file').files[0];
+  if(!f){ msg.className='msg err'; msg.textContent='Selecciona un archivo .m3u8'; return; }
+  try{
+    const text=await f.text();
+    const date=$('#date').value || today();
+    const label=$('#label').value;
+    const filename=`lists/${date}.m3u8`;
+    const existing=await ghGet(filename);
+    await ghPut(filename, b64enc(text), existing?existing.sha:null, 'add list '+date);
+    let idx=[];
+    const idxFile=await ghGet('lists/index.json');
+    if(idxFile) idx=JSON.parse(b64dec(idxFile.content));
+    idx=idx.filter(e=>e.date!==date);
+    idx.push({date, label:label||fmtDate(date), filename:`${date}.m3u8`, size:f.size, uploadedAt:new Date().toISOString()});
+    await ghPut('lists/index.json', b64enc(JSON.stringify(idx,null,2)), idxFile?idxFile.sha:null, 'update index '+date);
+    msg.className='msg ok'; msg.textContent='Lista publicada: '+date+'\nLa web se actualizara en unos segundos (GitHub Pages).';
+    $('#file').value=''; loadLists();
+  }catch(e){ msg.className='msg err'; msg.textContent='Error: '+e.message; }
+};
+
+function loadLists(){
+  const tok=getToken();
+  if(!tok){ $('#adminLists').innerHTML='<div class="sub">Ingresa tu token para ver las listas.</div>'; return; }
+  ghGet('lists/index.json').then(j=>{
+    const idx=j?JSON.parse(b64dec(j.content)):[];
+    const box=$('#adminLists'); box.innerHTML='';
+    if(!idx.length){ box.innerHTML='<div class="sub">No hay listas.</div>'; return; }
+    idx.sort((a,b)=>b.date.localeCompare(a.date));
+    idx.forEach(m=>{
+      const row=document.createElement('div'); row.className='item';
+      row.innerHTML=`<div><div class="info">${m.label||m.date}</div><div class="sub">${m.date}</div></div>`;
+      const del=document.createElement('button'); del.className='btn danger'; del.textContent='Eliminar';
+      del.onclick=async()=>{
+        try{
+          const tok2=getToken();
+          const fobj=await ghGet('lists/'+m.filename);
+          if(fobj) await ghDelete('lists/'+m.filename, fobj.sha, 'delete list '+m.date);
+          let cur=[]; const cf=await ghGet('lists/index.json'); if(cf) cur=JSON.parse(b64dec(cf.content));
+          cur=cur.filter(e=>e.date!==m.date);
+          await ghPut('lists/index.json', b64enc(JSON.stringify(cur,null,2)), cf?cf.sha:null, 'update index after delete');
+          loadLists();
+        }catch(e){ alert('Error: '+e.message); }
+      };
+      row.appendChild(del); box.appendChild(row);
+    });
+  }).catch(()=>{ $('#adminLists').innerHTML='<div class="sub">No se pudieron cargar las listas (revisa el token).</div>'; });
+}
+
+if(sessionStorage.getItem('sp_admin')==='1'){ if(localStorage.getItem('sp_pat')) showPanel(); }
+$('#date').value=today();
+</script>
+</body>
+</html>
